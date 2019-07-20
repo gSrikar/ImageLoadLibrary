@@ -24,6 +24,7 @@ class ImageLibrary {
 
     companion object {
         private val TAG = ImageLibrary::class.java.simpleName
+        private val DBG = BuildConfig.DEBUG
     }
 
     /**
@@ -40,7 +41,7 @@ class ImageLibrary {
         position: Int
     ) {
         backgroundExecutor.execute {
-            Log.d(TAG, "Position: $position")
+            if (DBG) Log.d(TAG, "Position: $position")
             loadImageCache(url, imageView, position)
         }
     }
@@ -54,7 +55,7 @@ class ImageLibrary {
             object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     backgroundExecutor.execute {
-                        Log.e(TAG, "Retrofit Api failed: ${t.message}")
+                        if (DBG) Log.e(TAG, "Retrofit Api failed: ${t.message}")
                     }
                 }
 
@@ -76,7 +77,7 @@ class ImageLibrary {
         position: Int
     ) {
         if (imageHashMap.containsKey(position)) {
-            Log.d(TAG, "Load the image from the cache")
+            if (DBG) Log.d(TAG, "Load the image from the cache")
             setImageBitmap(readCache(imageHashMap[position]!!), imageView)
         } else {
             downloadImage(url, imageView, position)
@@ -91,11 +92,11 @@ class ImageLibrary {
     ) {
         if (response.isSuccessful) {
             response.body()?.let {
-                Log.d(TAG, "Response is successful for $url")
+                if (DBG) Log.d(TAG, "Response is successful for $url")
                 createBitmap(it.bytes(), imageView, position)
             }
         } else {
-            Log.e(TAG, "Image Download Failed: ${response.message()}")
+            if (DBG) Log.e(TAG, "Image Download Failed: ${response.message()}")
         }
     }
 
@@ -104,7 +105,7 @@ class ImageLibrary {
         imageView: AppCompatImageView,
         position: Int
     ) {
-        Log.d(TAG, "Create a bitmap")
+        if (DBG) Log.d(TAG, "Create a bitmap")
         setImageBitmap(data, imageView)
         saveCache(position, data)
     }
@@ -113,7 +114,7 @@ class ImageLibrary {
         data: ByteArray,
         imageView: AppCompatImageView
     ) {
-        Log.d(TAG, "Set a bitmap")
+        if (DBG) Log.d(TAG, "Set a bitmap")
         val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
         mainThreadExecutor.execute {
             imageView.setImageBitmap(bitmap)
@@ -121,12 +122,12 @@ class ImageLibrary {
     }
 
     private fun updateImageHashMap(position: Int, url: String) {
-        Log.d(TAG, "Update Image Hash Map")
+        if (DBG) Log.d(TAG, "Update Image Hash Map")
         imageHashMap[position] = url
     }
 
     private fun saveCache(position: Int, data: ByteArray) {
-        Log.d(TAG, "Save Cache")
+        if (DBG) Log.d(TAG, "Save Cache")
         appContext?.let {
             val file = createCacheFile(it)
             val outputStream = FileOutputStream(file)
@@ -137,13 +138,13 @@ class ImageLibrary {
     }
 
     private fun readCache(path: String): ByteArray {
-        Log.d(TAG, "Read Cache")
+        if (DBG) Log.d(TAG, "Read Cache")
         val inputSteam = FileInputStream(path)
         return inputSteam.readBytes()
     }
 
     private fun createCacheFile(context: Context): File {
-        Log.d(TAG, "Create a cache file")
+        if (DBG) Log.d(TAG, "Create a cache file")
         val file = File(context.cacheDir.path)
         if (!file.exists()) {
             file.mkdirs()
@@ -154,7 +155,7 @@ class ImageLibrary {
         if (!cacheFile.exists()) {
             cacheFile.createNewFile()
         }
-        Log.d(TAG, "Create cache file at ${cacheFile.path}")
+        if (DBG) Log.d(TAG, "Create cache file at ${cacheFile.path}")
         return cacheFile
     }
 
