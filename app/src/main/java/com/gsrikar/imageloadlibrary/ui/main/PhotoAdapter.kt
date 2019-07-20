@@ -24,6 +24,13 @@ class PhotoAdapter(private val urls: ArrayList<String>) : RecyclerView.Adapter<P
     }
 
     private fun loadImage(imageView: AppCompatImageView, url: String, position: Int) {
+        // Load the image on the image view intelligently
         imageLibrary.loadImage(imageView, url, position)
+    }
+
+    override fun onViewRecycled(holder: PhotoViewHolder) {
+        super.onViewRecycled(holder)
+        // Skip loading the image for the position
+        imageLibrary.recycledViewPosition(holder.adapterPosition)
     }
 }

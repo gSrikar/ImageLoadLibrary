@@ -1,2 +1,2 @@
 # ImageLoadLibrary
-Loads the image onto an Imageview
+Loads the image onto an Image view

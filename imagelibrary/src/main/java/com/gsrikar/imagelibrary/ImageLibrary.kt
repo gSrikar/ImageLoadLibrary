@@ -33,6 +33,11 @@ class ImageLibrary {
     private val imageHashMap = hashMapOf<Int, String>()
 
     /**
+     * List of positions that are recycled
+     */
+    private val apiCallHashMap = hashMapOf<Int, Call<ResponseBody>>()
+
+    /**
      * Load the image
      */
     fun loadImage(
@@ -46,12 +51,24 @@ class ImageLibrary {
         }
     }
 
+    /**
+     * View Position was recycled
+     */
+    fun recycledViewPosition(recycledPosition: Int) {
+        if (DBG) Log.d(TAG, "Recycled Position: $recycledPosition")
+        apiCallHashMap[recycledPosition]?.cancel()
+    }
+
     private fun downloadImage(
         url: String,
         imageView: AppCompatImageView,
         position: Int
     ) {
-        downloadInterface.downloadImage(url).enqueue(
+        val call = downloadInterface.downloadImage(url)
+        // Add the api call to a hash map
+        apiCallHashMap[position] = call
+        // Make an api call to download the image
+        call.enqueue(
             object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     backgroundExecutor.execute {
