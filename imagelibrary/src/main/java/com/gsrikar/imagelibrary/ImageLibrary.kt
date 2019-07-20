@@ -54,7 +54,7 @@ class ImageLibrary {
     /**
      * View Position was recycled
      */
-    fun recycledViewPosition(recycledPosition: Int) {
+    fun recycledView(recycledPosition: Int) {
         if (DBG) Log.d(TAG, "Recycled Position: $recycledPosition")
         apiCallHashMap[recycledPosition]?.cancel()
     }

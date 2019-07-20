@@ -31,6 +31,6 @@ class PhotoAdapter(private val urls: ArrayList<String>) : RecyclerView.Adapter<P
     override fun onViewRecycled(holder: PhotoViewHolder) {
         super.onViewRecycled(holder)
         // Skip loading the image for the position
-        imageLibrary.recycledViewPosition(holder.adapterPosition)
+        imageLibrary.recycledView(holder.adapterPosition)
     }
 }
