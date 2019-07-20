@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.gsrikar.imagelibrary">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+        <provider
+            android:name=".providers.ImageProvider"
+            android:authorities="${applicationId}.imageprovider"
+            android:enabled="true"
+            android:exported="false" />
+    </application>
+
+</manifest>
