@@ -25,7 +25,15 @@ class MainFragment : Fragment() {
             "https://cdn.pixabay.com/photo/2019/06/12/21/09/ocean-4270249_960_720.jpg",
             "https://cdn.pixabay.com/photo/2017/06/22/23/40/picking-flowers-2432972_960_720.jpg",
             "https://cdn.pixabay.com/photo/2014/03/14/11/17/dancer-287078_960_720.jpg",
-            "https://cdn.pixabay.com/photo/2019/07/16/16/41/gaztelugatze-4342242_960_720.jpg"
+            "https://cdn.pixabay.com/photo/2019/07/16/16/41/gaztelugatze-4342242_960_720.jpg",
+            "https://cdn.pixabay.com/photo/2019/06/14/06/08/utah-4272938_960_720.jpg",
+            "https://cdn.pixabay.com/photo/2019/06/12/11/09/mood-4269040_960_720.jpg",
+            "https://cdn.pixabay.com/photo/2019/07/13/20/49/bike-4335681_960_720.jpg",
+            "https://cdn.pixabay.com/photo/2019/07/16/16/41/sea-4342241_960_720.jpg",
+            "https://cdn.pixabay.com/photo/2019/07/16/06/04/sparrow-4341123_960_720.jpg",
+            "https://cdn.pixabay.com/photo/2019/07/18/11/55/blackbird-4346244_960_720.jpg",
+            "https://cdn.pixabay.com/photo/2019/07/18/12/06/green-fields-4346263_960_720.jpg",
+            "https://cdn.pixabay.com/photo/2019/07/15/17/13/flower-4339932_960_720.jpg"
         )
     )
 
