@@ -9,8 +9,6 @@ import com.gsrikar.imagelibrary.init.mainThreadExecutor
 import com.gsrikar.imagelibrary.network.downloadInterface
 import com.gsrikar.imagelibrary.providers.ImageProvider.Companion.appContext
 import kotlinx.coroutines.*
-import okhttp3.ResponseBody
-import retrofit2.Response
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -80,11 +78,10 @@ class ImageLibrary {
     /**
      * Make an api call and download the image
      */
-    private suspend fun requestImage(url: String): ResponseBody {
-        return withContext(Dispatchers.IO) {
+    private suspend fun requestImage(url: String) =
+        withContext(Dispatchers.IO) {
             downloadInterface.downloadImage(url)
         }
-    }
 
     private fun loadImageCache(
         url: String,
