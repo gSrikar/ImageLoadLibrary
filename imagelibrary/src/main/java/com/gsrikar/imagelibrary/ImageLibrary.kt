@@ -67,6 +67,8 @@ class ImageLibrary {
             // Make an api call to download the image
             val responseBody = requestImage(url)
             backgroundExecutor.execute {
+                // Remove the job
+                apiCallHashMap.remove(position)
                 // Create a bitmap with the byte array
                 createBitmap(responseBody.bytes(), imageView, position)
             }
