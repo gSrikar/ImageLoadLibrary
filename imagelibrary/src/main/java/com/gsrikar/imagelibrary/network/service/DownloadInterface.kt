@@ -1,7 +1,6 @@
 package com.gsrikar.imagelibrary.network.service
 
 import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Url
 
@@ -11,6 +10,6 @@ import retrofit2.http.Url
 interface DownloadInterface {
 
     @GET
-    fun downloadImage(@Url url: String): Call<ResponseBody>
+    suspend fun downloadImage(@Url url: String): ResponseBody
 
 }

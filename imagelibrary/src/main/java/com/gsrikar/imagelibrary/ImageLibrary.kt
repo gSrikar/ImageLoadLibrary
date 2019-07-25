@@ -8,9 +8,8 @@ import com.gsrikar.imagelibrary.init.backgroundExecutor
 import com.gsrikar.imagelibrary.init.mainThreadExecutor
 import com.gsrikar.imagelibrary.network.downloadInterface
 import com.gsrikar.imagelibrary.providers.ImageProvider.Companion.appContext
+import kotlinx.coroutines.*
 import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileInputStream
@@ -35,7 +34,7 @@ class ImageLibrary {
     /**
      * List of positions that are recycled
      */
-    private val apiCallHashMap = hashMapOf<Int, Call<ResponseBody>>()
+    private val apiCallHashMap = hashMapOf<Int, Job>()
 
     /**
      * Load the image
@@ -64,28 +63,25 @@ class ImageLibrary {
         imageView: AppCompatImageView,
         position: Int
     ) {
-        val call = downloadInterface.downloadImage(url)
-        // Add the api call to a hash map
-        apiCallHashMap[position] = call
-        // Make an api call to download the image
-        call.enqueue(
-            object : Callback<ResponseBody> {
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    backgroundExecutor.execute {
-                        if (DBG) Log.e(TAG, "Retrofit Api failed: ${t.message}")
-                    }
-                }
-
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    backgroundExecutor.execute {
-                        receivedResponse(response, imageView, position, url)
-                    }
-                }
+        val imageJob = GlobalScope.launch(Dispatchers.IO) {
+            // Make an api call to download the image
+            val responseBody = requestImage(url)
+            backgroundExecutor.execute {
+                // Create a bitmap with the byte array
+                createBitmap(responseBody.bytes(), imageView, position)
             }
-        )
+        }
+        // Add the api call to a hash map
+        apiCallHashMap[position] = imageJob
+    }
+
+    /**
+     * Make an api call and download the image
+     */
+    private suspend fun requestImage(url: String): ResponseBody {
+        return withContext(Dispatchers.IO) {
+            downloadInterface.downloadImage(url)
+        }
     }
 
     private fun loadImageCache(
@@ -98,22 +94,6 @@ class ImageLibrary {
             setImageBitmap(readCache(imageHashMap[position]!!), imageView)
         } else {
             downloadImage(url, imageView, position)
-        }
-    }
-
-    private fun receivedResponse(
-        response: Response<ResponseBody>,
-        imageView: AppCompatImageView,
-        position: Int,
-        url: String
-    ) {
-        if (response.isSuccessful) {
-            response.body()?.let {
-                if (DBG) Log.d(TAG, "Response is successful for $url")
-                createBitmap(it.bytes(), imageView, position)
-            }
-        } else {
-            if (DBG) Log.e(TAG, "Image Download Failed: ${response.message()}")
         }
     }
 
