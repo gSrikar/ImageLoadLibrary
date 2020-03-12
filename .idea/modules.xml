@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ImageLoadLibrary.iml" filepath="$PROJECT_DIR$/.idea/ImageLoadLibrary.iml" group="ImageLoadLibrary" />
+      <module fileurl="file://$PROJECT_DIR$/ImageLoadLibrary.iml" filepath="$PROJECT_DIR$/ImageLoadLibrary.iml" group="ImageLoadLibrary" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="ImageLoadLibrary/app" />
       <module fileurl="file://$PROJECT_DIR$/imagelibrary/imagelibrary.iml" filepath="$PROJECT_DIR$/imagelibrary/imagelibrary.iml" group="ImageLoadLibrary/imagelibrary" />
     </modules>
